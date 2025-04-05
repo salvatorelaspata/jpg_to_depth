@@ -98,6 +98,47 @@ def create_depth_map(image_path, midas, transform, device):
 
     return Image.fromarray(depth_normalized)
 
+def process_single_image(input_image, midas, transform, device):
+    """
+    Process a single image in memory and return the depth map.
+    
+    Args:
+        input_image (PIL.Image): Input image
+        midas (torch.nn.Module): MiDaS model
+        transform: Transform pipeline
+        device: Computation device
+        
+    Returns:
+        PIL.Image: Depth map as PIL image
+    """
+    # Convert PIL image to numpy array
+    img_np = np.array(input_image.convert("RGB")) / 255.0
+    
+    # Prepare input for model
+    input_batch = transform(input_image).unsqueeze(0)
+    
+    # Generate depth
+    with torch.no_grad():
+        prediction = midas(input_batch.to(device))
+        depth = torch.nn.functional.interpolate(
+            prediction.unsqueeze(1),
+            size=img_np.shape[:2],
+            mode="bicubic",
+            align_corners=False,
+        ).squeeze()
+    
+    # Normalize
+    depth_numpy = depth.cpu().numpy()
+    depth_normalized = cv2.normalize(
+        depth_numpy, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U
+    )
+    
+    # Clean up
+    del img_np, input_batch, prediction, depth, depth_numpy
+    torch.cuda.empty_cache()
+    gc.collect()
+    
+    return Image.fromarray(depth_normalized)
 
 if __name__ == "__main__":
     input_folder = sys.argv[1]
