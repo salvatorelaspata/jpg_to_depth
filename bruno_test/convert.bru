@@ -1,0 +1,15 @@
+meta {
+  name: convert
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8001/convert
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file(/Users/salvatorelaspata/Pictures/Natale3d/IMG_6075.HEIC)
+}

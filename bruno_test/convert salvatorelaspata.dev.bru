@@ -1,0 +1,15 @@
+meta {
+  name: convert salvatorelaspata.dev
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://heic_to_jpg.salvatorelaspata.dev/convert
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file(/Users/salvatorelaspata/Pictures/Natale3d/IMG_6075.HEIC)
+}

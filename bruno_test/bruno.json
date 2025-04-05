@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "heic_to_jpg",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
