@@ -2,5 +2,5 @@ services:
   jpg-to-depth:
     build: .
     ports:
-      - "8001:8001"
+      - "8003:8001"
     container_name: jpg-to-depth
