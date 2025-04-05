@@ -3,4 +3,7 @@ uvicorn
 pillow
 pillow-heif
 python-multipart
+torch
 torchvision
+opencv-python
+timm
